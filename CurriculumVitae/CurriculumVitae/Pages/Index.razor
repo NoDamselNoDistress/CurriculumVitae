@@ -1,9 +1,29 @@
 ﻿@page "/"
+@inject NavigationManager _navManager
+<PageTitle>CurriculumVitae</PageTitle>
 
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="content px-5 py-5">
+    <div class="py-5">
+        <h2>Hallo, </h2>
+        <h3>Du willst also einen Lebenslauf erstellen?</h3>
+    </div>
+    <div class="py-4">
+        <button class="btn btn-md btn-primary" @onclick="NavigateToForm">Lebenslauf erstellen <span class="oi oi-arrow-right"></span></button>
+    </div>
+</div>
+
+
+
+@code {
+
+    public void NavigateToForm()
+    {
+        _navManager.NavigateTo($"/form");
+    }
+
+
+}
+

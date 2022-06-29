@@ -1,3 +1,4 @@
+
 .page {
     position: relative;
     display: flex;
@@ -8,14 +9,10 @@ main {
     flex: 1;
 }
 
-.sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
+
 
 .top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
+    justify-content: center;
     height: 3.5rem;
     display: flex;
     align-items: center;
@@ -47,12 +44,10 @@ main {
 
 @media (min-width: 641px) {
     .page {
-        flex-direction: row;
+        flex-direction: column;
     }
 
-    .sidebar {
-        width: 250px;
-        height: 100vh;
+    .mainbar {
         position: sticky;
         top: 0;
     }

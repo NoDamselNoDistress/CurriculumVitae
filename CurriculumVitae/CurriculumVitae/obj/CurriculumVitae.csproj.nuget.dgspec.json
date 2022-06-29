@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Michelle\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj": {}
+    "C:\\Users\\MichelleGette\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Michelle\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj": {
+    "C:\\Users\\MichelleGette\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Michelle\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj",
+        "projectUniqueName": "C:\\Users\\MichelleGette\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj",
         "projectName": "CurriculumVitae",
-        "projectPath": "C:\\Users\\Michelle\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj",
-        "packagesPath": "C:\\Users\\Michelle\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Michelle\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\obj\\",
+        "projectPath": "C:\\Users\\MichelleGette\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae.csproj",
+        "packagesPath": "C:\\Users\\MichelleGette\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MichelleGette\\source\\repos\\CurriculumVitae\\CurriculumVitae\\CurriculumVitae\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Michelle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MichelleGette\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,6 +43,20 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Components.DataAnnotations.Validation": {
+              "target": "Package",
+              "version": "[3.2.0-rc1.20223.4, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2022.6.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

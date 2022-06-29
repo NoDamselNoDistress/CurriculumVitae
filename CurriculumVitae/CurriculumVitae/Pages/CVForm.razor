@@ -1,0 +1,281 @@
+﻿@page "/form"
+@using CurriculumVitae.Utilities
+@using CurriculumVitae.ValidationModel;
+@using CurriculumVitae.Data;
+@using Microsoft.AspNetCore.Components;
+@using System.Net
+@inject IJSRuntime JS
+@inject NavigationManager _navManager
+
+
+<h3>Curriculum Vitae Formular</h3>
+<EditForm Model="@_person" OnValidSubmit="HandleValidSubmit">
+    <ObjectGraphDataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="m-2 p-2 col-md-8 form bg-light px-5">
+        <h5>Personendaten</h5>
+        <div class="form-group">
+            <label>Vorname</label>
+            <input type="text" @bind-value="@_person.FirstName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Nachname</label>
+            <input type="text" @bind-value="@_person.LastName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Geburtstag</label> <br />
+            <input type="date" @bind-value="@_person.Birthday" />
+        </div>
+        <div class="form-group">
+            <label>Bewerbungsfoto</label> <br />
+            <input type="text" @bind-value="@_person.PictureUri" placeholder="optional" />
+            <button class="btn btn-md btn-primary" type="button"
+                    @onclick="() => AddPictureUri(_person.PictureUri)">
+                Bild hinzufügen
+            </button>
+            @if (_imageSource is not null)
+            {
+                <p>
+                    <img src="@_imageSource" />
+                </p>
+            }
+        </div>
+
+    </div>
+    <div class="col-12"></div>
+
+    <div class="m-2 p-2 col-md-8 form bg-light px-5">
+        <h5>Addresse</h5>
+        <div class="form-group">
+            <label>Straße</label>
+            <input type="text" @bind-value="@_address.Street" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Hausnummer</label>
+            <input type="number" @bind-value="@_address.Housenumber" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Wohnort</label>
+            <input type="text" @bind-value="@_address.City" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Postleitzahl</label>
+            <input type="number" @bind-value="@_address.Postcode" class="form-control" />
+        </div>
+
+    </div>
+    <div class="col-12"></div>
+
+    <div class="m-2 p-2 col-md-8 form bg-light px-5">
+
+        <h5>Kontaktdaten</h5>
+        <div class="form-group">
+            <label>E-Mail-Addresse</label>
+            <input type="text" @bind-value="@_contact.MailAddress" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Telefonnummer</label>
+            <input type="text" @bind-value="@_contact.Phonenumber" class="form-control" />
+        </div>
+    </div>
+    <div class="col-12"></div>
+    <div class="m-2 col-md-2">
+        <button type="button" class="btn btn-md btn-primary"
+                @onclick="ToggleJobModal">
+            Joberfahrung hinzufügen
+        </button>
+    </div>
+    <div class="col-12"></div>
+    @if (_jobShown)
+    {
+        @foreach (var je in _jobExperience)
+        {
+            <form class="m-2 p-2 col-md-8 form bg-light px-5">
+                <h5>Berufserfahrung</h5>
+                <div class="form-group">
+                    <label>Name des Arbeitgebers</label>
+                    <input type="text" @bind-value="@je.Company" class="form-control" />
+                    <label>Position</label>
+                    <input type="text" @bind-value="@je.Position" class="form-control" />
+                    <label>Anfang der Beschäftigung</label>
+                    <input type="date" @bind-value="@je.BeginJob" class="form-control" />
+                    <label>Ende der Beschäftigung</label>
+                    <input type="date" @bind-value="@je.EndJob" class="form-control" />
+                    <label>Stellenbeschreibung</label>
+                    <input type="text" @bind-value="@je.Describtion" class="form-control" />
+                    <button type="button" class="m-2 btn btn-sm btn-primary" @onclick="OnExperienceAdd"><span class="oi oi-file"></span>Hinzufügen</button>
+                </div>
+            </form>
+        }
+
+    }
+    <div class="col-12"></div>
+    <div class="m-2 col-md-2">
+        <button type="button" class="btn btn-md btn-primary"
+                @onclick="ToggleEducationModal">
+            Schulerfahrung hinzufügen
+        </button>
+    </div>
+    <div class="col-12"></div>
+    @if (_educationShown)
+    {
+        @foreach (var ed in _education)
+        {
+            <form class="m-2 p-2 col-md-8 form bg-light px-5">
+                <h5>Bildung</h5>
+                <div class="form-group">
+                    <label>Name der Institution</label>
+                    <input type="text" @bind-value="@ed.Schoolname" class="form-control" />
+                    <label>Art der Ausbildung</label>
+                    <InputSelect @bind-Value="@ed.Degree" class="form-select">
+                        <option value="@TypOfDegree.Default">Wähle Abschluss aus</option>
+                        <option value="@TypOfDegree.Berufsreife">Berufsreife</option>
+                        <option value="@TypOfDegree.MittlereReife">Mittlere Reife</option>
+                        <option value="@TypOfDegree.Fachabitur">Fachabitur</option>
+                        <option value="@TypOfDegree.Abitur">Abitur</option>
+                        <option value="@TypOfDegree.Bachelor">Bachelor</option>
+                        <option value="@TypOfDegree.Master">Master</option>
+                        <option value="@TypOfDegree.Diplom">Diplom</option>
+                        <option value="@TypOfDegree.Doktorat">Doktor</option>
+                        <option value="@TypOfDegree.Meister">Meister</option>
+                        <option value="@TypOfDegree.Berufsausbildung">Berufsausbildung</option>
+                        <option value="@TypOfDegree.Weiterbildung">Weiterbildung</option>
+                        <option value="@TypOfDegree.Umschulung">Umschulung</option>
+                        <option value="@TypOfDegree.Keinen">Keinen oben genannten</option>
+                    </InputSelect>
+                    <br/>
+                    <label class="form-label">Abschlussnote</label>
+                    <input type="number" @bind-value="@ed.Grade" class="form-control" />
+                    <label>Anfang der Ausbildung</label>
+                    <input type="date" @bind-value="@ed.BeginEducation" class="form-control" />
+                    <label>Ende der Ausbildung</label>
+                    <input type="date" @bind-value="@ed.EndEducation" class="form-control" />
+                    <br />
+                    <button type="button" class="m-2 btn btn-sm btn-primary" @onclick="OnEducationAdd"><span class="oi oi-file"></span>Hinzufügen</button>
+                </div>
+
+            </form>
+        }
+    }
+    <div class="col-12"></div>
+    <div class="m-2  col-2">
+        <button type="submit" class="btn btn-success"> Lebenslauf erstellen</button>
+    </div>
+
+</EditForm>
+
+@if (_finalShown)
+{
+    <div class="m-2 col-8">
+        <h3>Es freut uns, dass Sie CurriculumVitae benutzt haben!</h3>
+        <p>Ihr Lebenslauf steht Ihnen nun zum Download zu Verfügung.</p>
+    </div>
+  @*  <div class="m-2  col-2">
+        <button type="button" class="btn btn-success" @onclick="() => DownloadPDF()">als Pdf herunterladen</button>
+    </div>*@
+
+
+
+}
+
+
+<div class="m-2  col-2">
+    <button class="btn btn-md btn-primary" @onclick="NavigateToIndex">Zurück <span class="oi oi-arrow-left"></span></button>
+</div>
+
+
+
+
+
+@code {
+    PersonValidationModel _person = new PersonValidationModel();
+    private bool _educationShown;
+    private bool _jobShown;
+    private bool _finalShown;
+    private string? _imageSource;
+    private string? _imgPath;
+    private Stream? fileStream { get; set; }
+    private string? _cvPath { get; set; }
+    List<JobExperience> _jobExperience = new List<JobExperience>();
+    List<Education> _education = new();
+    Address _address = new Address();
+    Contact _contact = new Contact();
+    DownloadHelper helper = new();
+
+    private void ToggleJobModal()
+    {
+
+        _jobShown = !_jobShown;
+        StateHasChanged();
+
+    }
+
+    private void ToggleEducationModal()
+    {
+        _educationShown = !_educationShown;
+        StateHasChanged();
+
+    }
+
+    public void HandleValidSubmit()
+    {
+        Person person = new Person(_person, _imgPath);
+
+        PDFBuilder builder = new PDFBuilder();
+        builder.GenerateLocal(person);
+        _finalShown = true;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+
+        _jobExperience = _person.JobExperiences;
+        _education = _person.Educations;
+        _address = _person.Address;
+        _contact = _person.Contact;
+
+        OnExperienceAdd();
+        OnEducationAdd();
+    }
+
+    public void OnExperienceAdd()
+    {
+        _jobExperience.Add(new JobExperience());
+    }
+
+    public void OnEducationAdd()
+    {
+        _education.Add(new Education());
+    }
+
+    private async Task AddPictureUri(string pictureUri)
+    {
+        if (pictureUri is not null)
+        {
+            string directoryPath = @"C:\temp\";
+            Uri uri = new Uri(pictureUri);
+
+            _imgPath = await helper.DownloadImageAsync(directoryPath, "image", uri);
+            _imageSource = $"{pictureUri}";
+
+            StateHasChanged();
+        }
+
+    }
+
+    //public async Task DownloadPDF()
+    //{
+    //    var fileName = "CurriculumVitae.pdf";
+    //    var user = Environment.UserName;
+    //    var directoryPath = $@"C:\Users\{user}\Downloads";
+    //    Uri uri = new Uri(_cvPath);
+    //    var result = await helper.DownloadImageAsync(directoryPath, fileName, uri);
+    //}
+
+   
+    public void NavigateToIndex()
+    {
+        _navManager.NavigateTo($"/");
+    }
+}
